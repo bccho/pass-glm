@@ -6,7 +6,7 @@ import os.path
 import sys
 import argparse
 import time
-import cPickle as cpk
+import pickle
 
 import numpy as np
 import numpy.random as npr
@@ -68,17 +68,17 @@ def main():
 
     out_dir = 'results/' + results_dir_name(args)
     create_folder_if_not_exist(out_dir)
-    results_file = out_dir + '/results.cpk'
+    results_file = out_dir + '/results.pickle'
     if os.path.exists(results_file):
         print('loading existing results...')
         with file(results_file, 'r') as f:
-            results = cpk.load(f)
+            results = pickle.load(f)
     else:
         results = run_experiment(args)
         if args.do_not_save_cov:
             del results['pass']['cov']
         with file(results_file, 'w') as f:
-            cpk.dump(results, f)
+            pickle.dump(results, f)
 
     sns.set_style('white')
     sns.set_context('notebook', font_scale=2, rc={'lines.linewidth': 2})

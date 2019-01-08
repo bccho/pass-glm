@@ -1,5 +1,5 @@
 ### Script for testing parallelization of PASS for logistic regression ###
-# Rerun in sequence with differing arguments to -n 
+# Rerun in sequence with differing arguments to -n
 
 from __future__ import print_function
 
@@ -7,7 +7,7 @@ import os.path
 import sys
 import argparse
 import time
-import cPickle as cpk
+import pickle
 
 import numpy as np
 import numpy.random as npr
@@ -68,11 +68,11 @@ def main():
 
     out_dir = 'results/' + results_dir_name(args)
     create_folder_if_not_exist(out_dir)
-    results_file = out_dir + '/results.cpk'
+    results_file = out_dir + '/results.pickle'
     if os.path.exists(results_file):
         print('loading existing results...')
         with file(results_file, 'r') as f:
-            results = cpk.load(f)
+            results = pickle.load(f)
         if args.force and args.num_cpus in results['ns']:
             i = results['ns'].index(args.num_cpus)
             results['ns'].pop(i)
@@ -82,7 +82,7 @@ def main():
     if results is None or args.num_cpus not in results['ns']:
         results = run_experiment(args, results)
         with file(results_file, 'w') as f:
-            cpk.dump(results, f)
+            pickle.dump(results, f)
     sns.set_style('white')
     sns.set_context('notebook', font_scale=3, rc={'lines.linewidth': 3})
     plot_timing(results, 'times', out_dir)

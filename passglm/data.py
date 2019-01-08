@@ -6,7 +6,7 @@ from __future__ import absolute_import, print_function
 import sys
 import csv
 import hashlib
-import cPickle as cpk
+import pickle
 from warnings import warn
 
 import numpy as np
@@ -553,7 +553,7 @@ def convert_categorical_data_to_svmlight(path, filetype, out_path, column_info,
                 sys.exit('file %s, line %d: %s' % (path, reader.line_num, e))
         if len(label_map) > 0:
             with open(out_path + '.label_map', 'w') as f:
-                cpk.dump(label_map, f)
+                pickle.dump(label_map, f)
         return abs(next_index), data
     else:
         raise ValueError("unsupported file type, %s" % file_type)
